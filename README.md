@@ -83,7 +83,6 @@ let main = (~namespace, ~version) =>
         ~metadata=Meta.make(
           ~name,
           ~labels=[("app", name)],
-          ~annotations=Std.Prometheus.(annotations(Config.port)),
           ()
         ),
         ~spec=Pod_spec.make(
@@ -94,9 +93,9 @@ let main = (~namespace, ~version) =>
               ~command=["app"],
               ~args=[
                 "--verbosity=debug",
-                "--listen-prometheus=" ++ Int.to_string(Std.Prometheus.Config.port),
+                "--listen-prometheus=9090"
               ],
-              ~ports-[Std.Prometheus.(port(Config.port))],
+              ~ports-[Port.make(~name="metrics", ~container_port=9090, ())],
               ~resources=Resources.make(
                 limits:   [cpu("100m"), memory("500Mi")],
                 requests: [cpu("500m"), memory("1Gi")],
