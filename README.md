@@ -45,7 +45,6 @@ let%make main = (~namespace, ~version) =>
         metadata: Meta {
           name,
           labels: [("app", name)],
-          annotations: Std.Prometheus.(annotations(Config.port))
         },
         spec: Pod_spec {
           containers: [
@@ -55,9 +54,9 @@ let%make main = (~namespace, ~version) =>
               command: ["app"],
               args: [
                 "--verbosity=debug",
-                "--listen-prometheus=" ++ Int.to_string(Std.Prometheus.Config.port),
+                "--listen-prometheus=9090"
               ],
-              ports: [Std.Prometheus.(port(Config.port))],
+              ports: [Port { name: "metrics", container_port: 9090 }],
               resources: Resources {
                 limits:   [cpu("100m"), memory("500Mi")],
                 requests: [cpu("500m"), memory("1Gi")]
