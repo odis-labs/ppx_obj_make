@@ -1,0 +1,23 @@
+lib: [
+  "_build/install/default/lib/ppx_make_record/META" {"META"}
+  "_build/install/default/lib/ppx_make_record/opam" {"opam"}
+  "_build/install/default/lib/ppx_make_record/ppx_make_record__Main.cmi" {"ppx_make_record__Main.cmi"}
+  "_build/install/default/lib/ppx_make_record/ppx_make_record__Main.cmx" {"ppx_make_record__Main.cmx"}
+  "_build/install/default/lib/ppx_make_record/ppx_make_record__Main.cmt" {"ppx_make_record__Main.cmt"}
+  "_build/install/default/lib/ppx_make_record/Main.ml" {"Main.ml"}
+  "_build/install/default/lib/ppx_make_record/ppx_make_record.cmi" {"ppx_make_record.cmi"}
+  "_build/install/default/lib/ppx_make_record/ppx_make_record.cmx" {"ppx_make_record.cmx"}
+  "_build/install/default/lib/ppx_make_record/ppx_make_record.cmt" {"ppx_make_record.cmt"}
+  "_build/install/default/lib/ppx_make_record/ppx_make_record.ml-gen" {"ppx_make_record.ml-gen"}
+  "_build/install/default/lib/ppx_make_record/ppx_make_record.cma" {"ppx_make_record.cma"}
+  "_build/install/default/lib/ppx_make_record/ppx_make_record.cmxa" {"ppx_make_record.cmxa"}
+  "_build/install/default/lib/ppx_make_record/ppx_make_record.a" {"ppx_make_record.a"}
+  "_build/install/default/lib/ppx_make_record/ppx_make_record.cmxs" {"ppx_make_record.cmxs"}
+  "_build/install/default/lib/ppx_make_record/ppx_make_record.dune" {"ppx_make_record.dune"}
+]
+libexec: [
+  "_build/install/default/lib/ppx_make_record/ppx.exe" {"ppx.exe"}
+]
+doc: [
+  "_build/install/default/doc/ppx_make_record/README.md"
+]

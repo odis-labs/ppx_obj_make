@@ -1,0 +1,8 @@
+
+
+(library
+ (public_name ppx_make_record)
+ (kind ppx_rewriter)
+ (preprocess (pps ppx_tools_versioned.metaquot_406))
+ (libraries fmt ocaml-migrate-parsetree ppx_tools_versioned))
+
