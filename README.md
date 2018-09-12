@@ -29,7 +29,8 @@ Add the preprocessor directive to your project's `dune` file:
 
 ## Examples
 
-Consider this example in ReasonML for a Kubernetes deployment. The translation
+Consider this example in ReasonML for a Kubernetes deployment (that uses the wonderful
+[kubecaml](https://github.com/andrenth/kubecaml) library). The translation
 is only applied in the `let` binding annotated with `make`.
 
 ```reason
