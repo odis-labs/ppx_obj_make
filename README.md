@@ -34,7 +34,7 @@ Consider this example in ReasonML for a Kubernetes deployment (that uses the won
 is only applied in the `let` binding annotated with `make`.
 
 ```reason
-let%make main = (~namespace, ~version) =>
+let%make app = (~namespace, ~version) =>
   Deployment {
     api_version: "extensions/v1beta1",
     kind: "Deployment",
@@ -72,7 +72,7 @@ let%make main = (~namespace, ~version) =>
 This is translated by the preprocessor into:
 
 ```reason
-let main = (~namespace, ~version) =>
+let app = (~namespace, ~version) =>
   Deployment.make(
     ~api_version="extensions/v1beta1",
     ~kind="Deployment",
