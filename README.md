@@ -50,7 +50,7 @@ let%make main = (~namespace, ~version) =>
           containers: [
             Container {
               name,
-              image: "my-company/my-app" ++ version,
+              image: "my-company/my-app:" ++ version,
               command: ["app"],
               args: [
                 "--verbosity=debug",
@@ -89,7 +89,7 @@ let main = (~namespace, ~version) =>
           ~containers: [
             Container.make(
               ~name,
-              ~image="my-company/my-app" ++ version,
+              ~image="my-company/my-app:" ++ version,
               ~command=["app"],
               ~args=[
                 "--verbosity=debug",
