@@ -2,11 +2,12 @@
 
 > Unreleased
 
-This syntax extension complements the deriving "make" plugin. It allows to use
-the convinient record syntax to make record values using the record constructor
-function `make`. In particular it is useful for large nested configuration DSLs
-where the regular function application syntax might be cumbersome to use
-because of the dangling `()` required for optional argument erasure.
+This syntax extension complements the 
+[deriving "make" plugin](https://github.com/ocaml-ppx/ppx_deriving#plugin-make).
+It allows to use the convinient record syntax to make record values using the
+record constructor function `make`. In particular it is useful for large nested
+configuration DSLs where the regular function application syntax might be
+cumbersome to use because of the dangling `()` required for optional argument erasure.
 
 
 ## Installation
