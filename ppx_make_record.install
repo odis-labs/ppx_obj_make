@@ -20,4 +20,5 @@ libexec: [
 ]
 doc: [
   "_build/install/default/doc/ppx_make_record/README.md"
+  "_build/install/default/doc/ppx_make_record/LICENSE"
 ]
