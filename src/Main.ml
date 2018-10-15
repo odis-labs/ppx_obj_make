@@ -7,6 +7,10 @@ open Parsetree
 open Longident
 
 
+let fail loc s =
+  raise (Location.Error (Location.error ~loc ("ppx_make_record: " ^ s)))
+
+
 let mk_func longident =
   let l = Longident.flatten longident in
   let l = List.append l ["make"] in
@@ -29,11 +33,11 @@ let rec expr mapper e =
     should_rewrite := false;
     e'
 
-  | Pexp_extension ({txt="make"; _}, _) ->
-    failwith "[%make] requires an expression"
+  | Pexp_extension ({txt="make"; loc}, _) ->
+    fail loc "requires an expression"
 
-  | Pexp_construct(
-      {txt=longident; _},
+  | Pexp_construct (
+      {txt=longident; loc},
       Some ({pexp_desc=Pexp_record (fields, None); _})
     ) when !should_rewrite ->
     let field_to_arg field =
@@ -41,14 +45,14 @@ let rec expr mapper e =
       | ({txt=Lident name; _}, value) -> (Labelled name, expr mapper value)
       | _ -> assert false (* invalid field name *) in
     let args = List.append (List.map field_to_arg fields) [(Nolabel, unit ())] in
-    Exp.apply (mk_func longident) args
+    Exp.apply ~loc (mk_func longident) args
 
   | Pexp_construct(
-      {txt=longident; _},
+      {txt=longident; loc},
       Some ({pexp_desc=Pexp_construct ({txt=Lident "()"; _}, None); _})
     ) when !should_rewrite ->
     let args = [(Nolabel, unit ())] in
-    Exp.apply (mk_func longident) args
+    Exp.apply ~loc (mk_func longident) args
 
   | _ -> default_mapper.expr mapper e
 
@@ -56,7 +60,7 @@ let rec expr mapper e =
 let rec structure mapper items =
   match items with
   | {pstr_desc = Pstr_extension (
-      ({txt="make"; _}, PStr [{pstr_desc = Pstr_value(rec_flag, bindings); _}]), _); _ }
+      ({txt="make"; loc=_}, PStr [{pstr_desc = Pstr_value(rec_flag, bindings); _}]), _); _ }
     :: items' ->
     should_rewrite := true;
     let bindings' =
