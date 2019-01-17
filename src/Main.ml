@@ -11,14 +11,15 @@ let fail loc s =
   raise (Location.Error (Location.error ~loc ("ppx_make_record: " ^ s)))
 
 
-let mk_func longident =
+let mk_func ~loc longident =
   let l = Longident.flatten longident in
   let l = List.append l ["make"] in
+  (* TODO: Extend the loc col num to include "make". *)
   let longident =
     match Longident.unflatten l with
     | Some lid -> lid
     | None -> failwith (Printf.sprintf "Invalid longident: [%s]" (String.concat "." l)) in
-  Exp.ident (Location.mknoloc longident)
+  Exp.ident (Location.mkloc longident loc)
 
 let unit ?loc () =
   Exp.construct ?loc (Location.mknoloc (Lident "()")) None
@@ -45,14 +46,14 @@ let rec expr mapper e =
       | ({txt=Lident name; _}, value) -> (Labelled name, expr mapper value)
       | _ -> assert false (* invalid field name *) in
     let args = List.append (List.map field_to_arg fields) [(Nolabel, unit ())] in
-    Exp.apply ~loc (mk_func longident) args
+    Exp.apply ~loc (mk_func ~loc longident) args
 
   | Pexp_construct(
       {txt=longident; loc},
       Some ({pexp_desc=Pexp_construct ({txt=Lident "()"; _}, None); _})
     ) when !should_rewrite ->
     let args = [(Nolabel, unit ())] in
-    Exp.apply ~loc (mk_func longident) args
+    Exp.apply ~loc (mk_func ~loc longident) args
 
   | _ -> default_mapper.expr mapper e
 
