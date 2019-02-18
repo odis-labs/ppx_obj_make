@@ -39,6 +39,25 @@ let rec expr mapper e =
 
   | Pexp_construct (
       {txt=longident; loc},
+      Some ({pexp_desc=
+        Pexp_extension (
+          {txt="bs.obj"; _},
+          PStr [{pstr_desc = Pstr_eval({pexp_desc=Pexp_record (fields, None); _}, _); _}]
+        );
+        _
+      })
+    ) ->
+
+    let field_to_arg field =
+      match field with
+      | ({txt=Lident name; _}, value) -> (Labelled name, expr mapper value)
+      | _ -> assert false (* invalid field name *) in
+    let args = List.append (List.map field_to_arg fields) [(Nolabel, unit ())] in
+    Exp.apply ~loc (mk_func ~loc longident) args
+
+  (* [%make ... X { aaa = vvv } ... ] *)
+  | Pexp_construct (
+      {txt=longident; loc},
       Some ({pexp_desc=Pexp_record (fields, None); _})
     ) when !should_rewrite ->
     let field_to_arg field =
