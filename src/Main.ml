@@ -28,19 +28,17 @@ let should_rewrite = ref false
 
 let rec expr mapper e =
   match e.pexp_desc with
-  | Pexp_extension ({txt="make"; _}, PStr [{pstr_desc = Pstr_eval(x, _); _}]) ->
-    should_rewrite := true;
-    let e' = expr mapper x in
-    should_rewrite := false;
-    e'
-
-  | Pexp_extension ({txt="make"; loc}, _) ->
-    fail loc "requires an expression"
-
+  (* X { "aaa": vvv } *)
   | Pexp_construct (
       {txt=longident; loc},
-      Some ({pexp_desc=Pexp_record (fields, None); _})
-    ) when !should_rewrite ->
+      Some ({pexp_desc=
+        Pexp_extension (
+          {txt="bs.obj"; _},
+          PStr [{pstr_desc = Pstr_eval({pexp_desc=Pexp_record (fields, None); _}, _); _}]
+        );
+        _
+      })) ->
+
     let field_to_arg field =
       match field with
       | ({txt=Lident name; _}, value) -> (Labelled name, expr mapper value)
@@ -50,36 +48,15 @@ let rec expr mapper e =
 
   | Pexp_construct(
       {txt=longident; loc},
-      Some ({pexp_desc=Pexp_construct ({txt=Lident "()"; _}, None); _})
-    ) when !should_rewrite ->
+      Some {pexp_desc=Pexp_object {pcstr_self={ppat_desc = Ppat_any; _}; pcstr_fields=[]}; _}
+    ) ->
     let args = [(Nolabel, unit ())] in
     Exp.apply ~loc (mk_func ~loc longident) args
 
   | _ -> default_mapper.expr mapper e
 
 
-let rec structure mapper items =
-  match items with
-  | {pstr_desc = Pstr_extension (
-      ({txt="make"; loc=_}, PStr [{pstr_desc = Pstr_value(rec_flag, bindings); _}]), _); _ }
-    :: items' ->
-    should_rewrite := true;
-    let bindings' =
-      List.map
-        (fun binding -> { binding with pvb_expr = expr mapper binding.pvb_expr })
-        bindings
-    in
-    should_rewrite := false;
-    let item' = Str.value rec_flag bindings' in
-    item' :: structure mapper items'
-
-  | item :: items ->
-    mapper.structure_item mapper item :: structure mapper items
-
-  | [] -> []
-
-
 let () =
-  let rewriter _config _cookies = { default_mapper with expr; structure } in
+  let rewriter _config _cookies = { default_mapper with expr } in
   Driver.register ~name:"ppx_make_record" Versions.ocaml_406 rewriter
 
