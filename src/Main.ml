@@ -37,6 +37,18 @@ let rec expr mapper e =
   | Pexp_extension ({txt="make"; loc}, _) ->
     fail loc "requires an expression"
 
+  (* X { "aaa": vvv } *)
+  | Pexp_construct (
+      {txt=longident; loc},
+      Some ({pexp_desc=
+        Pexp_extension (
+          {txt="bs.obj"; _},
+          PStr [{pstr_desc = Pstr_eval({pexp_desc=Pexp_record (fields, None); _}, _); _}]
+        );
+        _
+      }))
+
+  (* [%make ... X { aaa: vvv } ... ] *)
   | Pexp_construct (
       {txt=longident; loc},
       Some ({pexp_desc=Pexp_record (fields, None); _})
