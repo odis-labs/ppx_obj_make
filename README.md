@@ -4,9 +4,10 @@
 
 This syntax extension leverages ReasonML's object literal notation to simplify
 initialization of labeled multi-parameter functions. In particular it is useful
-for large nested configuration DSLs where the regular function application
-syntax might be cumbersome to use because of the dangling `()` required for
-optional argument erasure.
+for large nested configuration DSLs where the regular [labeled function application
+syntax](https://reasonml.github.io/docs/en/function#optional-labeled-arguments)
+might be cumbersome to use because of the dangling `()` required for optional
+argument erasure.
 
 
 ## Quickstart
