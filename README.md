@@ -31,7 +31,7 @@ configuraton to your `dune` file:
 ## Usage
 
 Any module containing a function named `make` with labeled arguments can be used
-with this extension. Consider the following example:
+with this extension.
 
 ```reason
 open Printf;
