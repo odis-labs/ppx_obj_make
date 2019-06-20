@@ -16,7 +16,6 @@ To install `ppx_obj_make` in an [esy](https://esy.sh) project, add the following
 dependency to your `package.json` file:
 
 ```
-  ...
   "dependencies": {
     "ppx_obj_make": "github:rizo/ppx_obj_make#master"
   }
