@@ -2,7 +2,7 @@
 
 (library
  (name Main)
- (public_name ppx_make_record)
+ (public_name ppx_obj_make)
  (kind ppx_rewriter)
  (libraries ocaml-migrate-parsetree ppx_tools_versioned))
 
