@@ -11,8 +11,6 @@ optional argument erasure.
 
 ## Quickstart
 
-{2 Quickstart}
-
 To install `ppx_make_record` in an [esy](https://esy.sh) project, add the following
 dependency to your `package.json` file:
 
