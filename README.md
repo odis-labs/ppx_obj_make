@@ -1,4 +1,4 @@
-# ppx_make_record
+# ppx_obj_make
 
 > Unreleased
 
@@ -11,24 +11,38 @@ optional argument erasure.
 
 ## Quickstart
 
-To install `ppx_make_record` in an [esy](https://esy.sh) project, add the following
+To install `ppx_obj_make` in an [esy](https://esy.sh) project, add the following
 dependency to your `package.json` file:
 
 ```
   ...
   "dependencies": {
-    "ppx_make_record": "github:rizo/ppx_make_record#master"
+    "ppx_obj_make": "github:rizo/ppx_obj_make#master"
   }
 ```
-
-If you are using [opam](https://opam.ocaml.org/), run: `opam install
-ppx_make_record`.
 
 In your [dune](https://dune.build/) project add the following preprocess
 configuraton to your `dune` file:
 
 ```
-(preprocess (pps ppx_make_record))
+(preprocess (pps ppx_obj_make))
+```
+
+## Usage
+
+Any module containing a function named `make` with labeled arguments can be used
+with this extension. Consider the following example:
+
+```reason
+open Printf;
+
+module Person = {
+  let make = (~name, ~age, ()) =>
+    printf("Hi %s! You are %d years old.\n", name, age);
+};
+
+/* Use object literal notation to call `Person.make`. */
+Person { "name": "Dylan", "age": 32 };
 ```
 
 
